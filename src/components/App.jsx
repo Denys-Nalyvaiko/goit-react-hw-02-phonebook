@@ -1,75 +1,56 @@
 import { Component } from 'react';
-import { nanoid } from 'nanoid';
+import { Global } from '@emotion/react';
+import { ContactForm } from './ContactForm/ContactForm';
+import { Filter } from './Filter/Filter';
+import { ContactList } from './ContactList/ContactList';
+import { GlobalStyles } from 'css/GlobalStyles';
+import { Container, Title } from './Container.styled';
 
 export class App extends Component {
   state = {
-    contacts: [],
-    name: '',
-    number: '',
+    contacts: [
+      { id: 'id-1', name: 'Rosie Simpson', number: '459-12-56' },
+      { id: 'id-2', name: 'Hermione Kline', number: '443-89-12' },
+      { id: 'id-3', name: 'Eden Clements', number: '645-17-79' },
+      { id: 'id-4', name: 'Annie Copeland', number: '227-91-26' },
+    ],
+    filter: '',
   };
 
-  handleFormSubmit = event => {
-    event.preventDefault();
-
-    const { name, number } = this.state;
-    const currentContact = { id: nanoid(), name: name, number: number };
-
+  handleFromSubmit = currentContact => {
     this.setState(prevState => ({
       contacts: [currentContact, ...prevState.contacts],
     }));
-
-    this.reset();
   };
 
-  handleInputChange = event => {
-    const { name, value } = event.currentTarget;
-    this.setState({ [name]: value });
+  handleFilterInputChange = event => {
+    const { value } = event.currentTarget;
+    this.setState({ filter: value });
   };
 
-  reset = () => {
-    this.setState({ name: '', number: '' });
+  updateFilteredList = () => {
+    const { contacts, filter } = this.state;
+    const validFilter = filter.toLowerCase().trim();
+
+    return contacts.filter(({ name }) =>
+      name.toLowerCase().includes(validFilter)
+    );
   };
 
   render() {
-    const nameInputId = nanoid();
-    const numberInputId = nanoid();
-
     return (
       <>
-        <h1>Phonebook</h1>
-        <form action="submit" onSubmit={this.handleFormSubmit}>
-          <label htmlFor={nameInputId} />
-          Name
-          <input
-            type="text"
-            name="name"
-            id={nameInputId}
-            value={this.state.name}
-            required
-            onChange={this.handleInputChange}
+        <Global styles={GlobalStyles} />
+        <Container>
+          <Title>Phonebook</Title>
+          <ContactForm onSubmit={this.handleFromSubmit} />
+          <h2>Contacts</h2>
+          <Filter
+            value={this.state.filter}
+            onChange={this.handleFilterInputChange}
           />
-          <label htmlFor={numberInputId} />
-          Number
-          <input
-            type="tel"
-            name="number"
-            id={nameInputId}
-            value={this.state.number}
-            required
-            onChange={this.handleInputChange}
-          />
-          <button type="submit">Add contact</button>
-        </form>
-        <h2>Contacts</h2>
-        <ul>
-          {this.state.contacts.map(({ id, name, number }) => (
-            <li key={id}>
-              <p>
-                {name}: {number}
-              </p>
-            </li>
-          ))}
-        </ul>
+          <ContactList contacts={this.updateFilteredList()} />
+        </Container>
       </>
     );
   }
