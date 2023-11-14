@@ -6,10 +6,14 @@ import IconButton from '@mui/material/IconButton';
 import FolderIcon from '@mui/icons-material/Folder';
 import DeleteIcon from '@mui/icons-material/Delete';
 
-export const ContactItem = ({ name, number }) => (
+export const ContactItem = ({ id, name, number, onDeleteButtonClick }) => (
   <ListItem
     secondaryAction={
-      <IconButton edge="end" aria-label="delete">
+      <IconButton
+        edge="end"
+        aria-label="delete"
+        onClick={() => onDeleteButtonClick(id)}
+      >
         <DeleteIcon color="primary" />
       </IconButton>
     }

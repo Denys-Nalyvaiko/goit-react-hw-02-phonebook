@@ -1,4 +1,5 @@
 import { Component } from 'react';
+import { Notify } from 'notiflix';
 import { Global } from '@emotion/react';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import { orange, lime } from '@mui/material/colors';
@@ -27,6 +28,16 @@ export class App extends Component {
   };
 
   handleFromSubmit = currentContact => {
+    const isContactNameAlreadyExists = this.state.contacts.find(
+      ({ name }) =>
+        name.toLowerCase().trim() === currentContact.name.toLowerCase().trim()
+    );
+
+    if (isContactNameAlreadyExists) {
+      Notify.failure('Contact with this name already exists');
+      return;
+    }
+
     this.setState(prevState => ({
       contacts: [currentContact, ...prevState.contacts],
     }));
@@ -46,6 +57,12 @@ export class App extends Component {
     );
   };
 
+  handleDeleteButtonClick = contactId => {
+    this.setState(({ contacts }) => ({
+      contacts: contacts.filter(({ id }) => id !== contactId),
+    }));
+  };
+
   render() {
     return (
       <>
@@ -62,7 +79,10 @@ export class App extends Component {
                 value={this.state.filter}
                 onChange={this.handleFilterInputChange}
               />
-              <ContactList contacts={this.updateFilteredList()} />
+              <ContactList
+                contacts={this.updateFilteredList()}
+                onDeleteButtonClick={this.handleDeleteButtonClick}
+              />
             </div>
           </ThemeProvider>
         </Container>
