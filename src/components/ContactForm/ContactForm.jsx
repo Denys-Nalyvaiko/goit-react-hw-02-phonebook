@@ -1,5 +1,7 @@
 import { Component } from 'react';
 import { nanoid } from 'nanoid';
+import Button from '@mui/material/Button';
+import { FormBox, TextInput } from './ContactForm.styled';
 
 export class ContactForm extends Component {
   state = {
@@ -31,10 +33,21 @@ export class ContactForm extends Component {
     const numberInputId = nanoid();
 
     return (
-      <form action="submit" onSubmit={this.handleFormSubmit}>
-        <label htmlFor={nameInputId} />
-        Name
-        <input
+      <FormBox
+        component="form"
+        sx={{
+          '& > :not(style)': {
+            m: 1,
+            width: '32ch',
+            input: { color: '#f6d9b1' },
+          },
+        }}
+        action="submit"
+        onSubmit={this.handleFormSubmit}
+      >
+        <TextInput
+          label="Name"
+          variant="outlined"
           type="text"
           name="name"
           id={nameInputId}
@@ -42,18 +55,20 @@ export class ContactForm extends Component {
           required
           onChange={this.handleInputChange}
         />
-        <label htmlFor={numberInputId} />
-        Number
-        <input
+        <TextInput
+          label="Number"
+          variant="outlined"
           type="tel"
           name="number"
-          id={nameInputId}
+          id={numberInputId}
           value={this.state.number}
           required
           onChange={this.handleInputChange}
         />
-        <button type="submit">Add contact</button>
-      </form>
+        <Button variant="outlined" type="submit">
+          Add contact
+        </Button>
+      </FormBox>
     );
   }
 }

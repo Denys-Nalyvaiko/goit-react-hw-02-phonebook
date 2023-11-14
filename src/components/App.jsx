@@ -1,10 +1,19 @@
 import { Component } from 'react';
 import { Global } from '@emotion/react';
+import { ThemeProvider, createTheme } from '@mui/material/styles';
+import { orange, lime } from '@mui/material/colors';
 import { ContactForm } from './ContactForm/ContactForm';
 import { Filter } from './Filter/Filter';
 import { ContactList } from './ContactList/ContactList';
 import { GlobalStyles } from 'css/GlobalStyles';
-import { Container, Title } from './Container.styled';
+import { Container, Title, ContactsTitle } from './Container.styled';
+
+const theme = createTheme({
+  palette: {
+    primary: orange,
+    secondary: lime,
+  },
+});
 
 export class App extends Component {
   state = {
@@ -42,14 +51,20 @@ export class App extends Component {
       <>
         <Global styles={GlobalStyles} />
         <Container>
-          <Title>Phonebook</Title>
-          <ContactForm onSubmit={this.handleFromSubmit} />
-          <h2>Contacts</h2>
-          <Filter
-            value={this.state.filter}
-            onChange={this.handleFilterInputChange}
-          />
-          <ContactList contacts={this.updateFilteredList()} />
+          <ThemeProvider theme={theme}>
+            <div>
+              <Title>Phonebook</Title>
+              <ContactForm onSubmit={this.handleFromSubmit} />
+            </div>
+            <div>
+              <ContactsTitle>Contacts</ContactsTitle>
+              <Filter
+                value={this.state.filter}
+                onChange={this.handleFilterInputChange}
+              />
+              <ContactList contacts={this.updateFilteredList()} />
+            </div>
+          </ThemeProvider>
         </Container>
       </>
     );
