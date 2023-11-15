@@ -14,7 +14,8 @@ export class ContactForm extends Component {
     event.preventDefault();
 
     const { name, number } = this.state;
-    const currentContact = { id: nanoid(), name: name, number: number };
+    const maskedName = this.maskNameCase(name);
+    const currentContact = { id: nanoid(), name: maskedName, number: number };
 
     this.props.onSubmit(currentContact);
     this.reset();
@@ -23,6 +24,13 @@ export class ContactForm extends Component {
   handleInputChange = event => {
     const { name, value } = event.currentTarget;
     this.setState({ [name]: value });
+  };
+
+  maskNameCase = name => {
+    return name
+      .split(' ')
+      .map(element => element[0].toUpperCase() + element.slice(1).toLowerCase())
+      .join(' ');
   };
 
   reset = () => {
