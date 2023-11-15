@@ -7,7 +7,7 @@ import { ContactForm } from './ContactForm/ContactForm';
 import { Filter } from './Filter/Filter';
 import { ContactList } from './ContactList/ContactList';
 import { GlobalStyles } from 'css/GlobalStyles';
-import { Container, Title, ContactsTitle } from './Container.styled';
+import { Container, Title, ContactsTitle, InfoTitle } from './Container.styled';
 
 const theme = createTheme({
   palette: {
@@ -18,12 +18,7 @@ const theme = createTheme({
 
 export class App extends Component {
   state = {
-    contacts: [
-      { id: 'id-1', name: 'Rosie Simpson', number: '459-12-56' },
-      { id: 'id-2', name: 'Hermione Kline', number: '443-89-12' },
-      { id: 'id-3', name: 'Eden Clements', number: '645-17-79' },
-      { id: 'id-4', name: 'Annie Copeland', number: '227-91-26' },
-    ],
+    contacts: [],
     filter: '',
   };
 
@@ -34,7 +29,7 @@ export class App extends Component {
     );
 
     if (isContactNameAlreadyExists) {
-      Notify.failure('Contact with this name already exists');
+      Notify.failure('Contact with this name already exist');
       return;
     }
 
@@ -79,10 +74,14 @@ export class App extends Component {
                 value={this.state.filter}
                 onChange={this.handleFilterInputChange}
               />
-              <ContactList
-                contacts={this.updateFilteredList()}
-                onDeleteButtonClick={this.handleDeleteButtonClick}
-              />
+              {this.updateFilteredList().length === 0 ? (
+                <InfoTitle>The contact list is empty</InfoTitle>
+              ) : (
+                <ContactList
+                  contacts={this.updateFilteredList()}
+                  onDeleteButtonClick={this.handleDeleteButtonClick}
+                />
+              )}
             </div>
           </ThemeProvider>
         </Container>

@@ -1,6 +1,7 @@
 import { Component } from 'react';
 import { nanoid } from 'nanoid';
 import Button from '@mui/material/Button';
+import ReactInputMask from 'react-input-mask';
 import { FormBox, TextInput } from './ContactForm.styled';
 
 export class ContactForm extends Component {
@@ -55,16 +56,23 @@ export class ContactForm extends Component {
           required
           onChange={this.handleInputChange}
         />
-        <TextInput
-          label="Number"
-          variant="outlined"
-          type="tel"
-          name="number"
-          id={numberInputId}
+        <ReactInputMask
+          mask="999-99-99"
+          maskChar=""
           value={this.state.number}
-          required
           onChange={this.handleInputChange}
-        />
+        >
+          {() => (
+            <TextInput
+              label="Number"
+              variant="outlined"
+              type="tel"
+              name="number"
+              id={numberInputId}
+              required
+            />
+          )}
+        </ReactInputMask>
         <Button variant="outlined" type="submit">
           Add contact
         </Button>
