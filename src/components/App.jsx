@@ -1,5 +1,6 @@
 import { Component } from 'react';
 import { Notify } from 'notiflix';
+import { nanoid } from 'nanoid';
 import { Global } from '@emotion/react';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import { orange, lime } from '@mui/material/colors';
@@ -34,7 +35,7 @@ export class App extends Component {
     }
 
     this.setState(prevState => ({
-      contacts: [currentContact, ...prevState.contacts],
+      contacts: [{ id: nanoid(), ...currentContact }, ...prevState.contacts],
     }));
   };
 

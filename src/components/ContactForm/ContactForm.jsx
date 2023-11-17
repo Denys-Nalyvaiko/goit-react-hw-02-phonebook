@@ -10,12 +10,14 @@ export class ContactForm extends Component {
     number: '',
   };
 
+  nameInputId = nanoid();
+  numberInputId = nanoid();
+
   handleFormSubmit = event => {
     event.preventDefault();
 
     const { name, number } = this.state;
-    const maskedName = this.maskNameCase(name);
-    const currentContact = { id: nanoid(), name: maskedName, number: number };
+    const currentContact = { name: name, number: number };
 
     this.props.onSubmit(currentContact);
     this.reset();
@@ -26,21 +28,11 @@ export class ContactForm extends Component {
     this.setState({ [name]: value });
   };
 
-  maskNameCase = name => {
-    return name
-      .split(' ')
-      .map(element => element[0].toUpperCase() + element.slice(1).toLowerCase())
-      .join(' ');
-  };
-
   reset = () => {
     this.setState({ name: '', number: '' });
   };
 
   render() {
-    const nameInputId = nanoid();
-    const numberInputId = nanoid();
-
     return (
       <FormBox
         component="form"
@@ -59,7 +51,7 @@ export class ContactForm extends Component {
           variant="outlined"
           type="text"
           name="name"
-          id={nameInputId}
+          id={this.nameInputId}
           value={this.state.name}
           required
           onChange={this.handleInputChange}
@@ -76,7 +68,7 @@ export class ContactForm extends Component {
               variant="outlined"
               type="tel"
               name="number"
-              id={numberInputId}
+              id={this.numberInputId}
               required
             />
           )}

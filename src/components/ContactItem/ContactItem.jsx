@@ -28,6 +28,7 @@ export const ContactItem = ({ id, name, number, onDeleteButtonClick }) => (
       secondary={number}
       primaryTypographyProps={{ color: '#f6d9b1' }}
       secondaryTypographyProps={{ color: '#dca75d' }}
+      sx={{ textTransform: 'capitalize' }}
     />
   </ListItem>
 );
